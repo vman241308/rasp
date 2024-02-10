@@ -22,7 +22,7 @@ const Routes = [
     element: <CalendarLayout />,
     children: [
       {
-        path: "/calendarView",
+        path: "/calendarview",
         element: <Calendar />,
       },
     ],
