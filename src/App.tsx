@@ -3,7 +3,7 @@ import Routes from "@/Routes";
 
 function App() {
   const pages = useRoutes(Routes);
-  return <>{pages}</>;
+  return <div className="max-w-[440px] mx-auto pt-4 min-h-[100vh] flex flex-col">{pages}</div>;
 }
 
 export default App;
