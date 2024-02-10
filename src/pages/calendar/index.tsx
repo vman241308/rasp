@@ -150,7 +150,7 @@ const Calendar = () => {
     <>
       <div>
         <div className="grid grid-cols-3 my-4 mx-8">
-          <div className="text-base self-center" onClick={() => navigate("/")}>
+          <div className="text-base self-center cursor-pointer" onClick={() => navigate("/")}>
             {"<"} Back
           </div>
           <div className="text-xl text-center w-full">Calendar</div>
@@ -167,8 +167,8 @@ const Calendar = () => {
               showDaysOutsideCurrentMonth
             />
             <div className="flex float-end gap-4 mr-24">
-              <span onClick={onClickClear}>Clear</span>
-              <span className="text-custom-blue" onClick={onClickToday}>
+              <span className="cursor-pointer" onClick={onClickClear}>Clear</span>
+              <span className="text-custom-blue cursor-pointer" onClick={onClickToday}>
                 Today
               </span>
             </div>

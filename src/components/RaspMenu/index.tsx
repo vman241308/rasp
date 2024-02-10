@@ -14,7 +14,7 @@ const RaspMenu: React.FC<MenuComponentsProps> = (props) => {
 
   return (
     <div
-      className="flex rounded h-32 w-32 bg-white"
+      className="flex rounded h-32 w-32 bg-white cursor-pointer"
       onClick={() => navigate(props.menu.path)}
     >
       <div className="flex flex-col m-auto gap-4">
