@@ -23,13 +23,13 @@ const Routes = [
     element: <CalendarLayout />,
     children: [
       {
-        path: "/calendarview",
+        path: "/calendar",
         element: <Calendar />,
       },
       {
-        path: "/leaveview",
-        element: <Leave />
-      }
+        path: "/leave",
+        element: <Leave />,
+      },
     ],
   },
   {

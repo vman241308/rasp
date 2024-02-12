@@ -1,0 +1,72 @@
+.overlay {
+  width: 100vw;
+  height: 100vh;
+  height: calc(var(--vh, 1vh) * 100);
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  overflow-y: scroll;
+}
+
+.ReactModal__Overlay {
+  background-color: rgba(25, 0, 0, 0.2);
+}
+
+.ReactModal__Overlay--after-open {
+  transition: background-color 0.2s ease;
+  background-color: rgba(25, 0, 0, 0.55);
+}
+
+.ReactModal__Overlay--before-close {
+  transition: background-color 0.2s ease 0.2s;
+  background-color: rgba(25, 0, 0, 0);
+}
+
+.ReactModalPortal * {
+  outline: none;
+}
+
+.content {
+  bottom: 0;
+  position: fixed;
+  left: 0;
+  right: 0;
+  overflow: hidden;
+  background-color: #fff;
+  width: 100%;
+  max-width: 962px;
+  height: calc(92%);
+  margin: 0 auto;
+  padding: 0;
+  outline: none;
+  border-top-left-radius: 24px;
+  border-top-right-radius: 24px;
+}
+
+/** Product Detail **/
+.product-detail .product-detail-content {
+  height: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  max-width: 656px;
+  border-radius: 0;
+}
+
+.product-detail .ReactModal__Content {
+  transform: translate3d(0%, 100%, 0);
+}
+
+.product-detail .ReactModal__Content--after-open {
+  transform: translate3d(0%, 0, 0);
+  transition: transform 400ms ease-in-out;
+}
+
+.product-detail .ReactModal__Content--before-close {
+  transform: translate3d(0%, 100%, 0);
+  transition: transform 400ms ease-in-out;
+}
+/** end Product Detail **/

@@ -13,8 +13,13 @@ export const SHIFT_STATUS_CONFIRMED = 1;
 export const LEAVE_STATUS = {
   PENDING: 0,
   APPROVED: 1,
-  DECLINED: 2
-}
+  DECLINED: 2,
+};
+
+export const LEAVE_ACTIVE_STATUS = {
+  ACTIVE: 0,
+  ARCHIVED: 1,
+};
 
 // tab headers on home page
 export const TAB_HEADER_UPCOMING_SHIFTS = "upcoming_shifts";
