@@ -94,7 +94,7 @@ const RaspApplyLeaveModal = (props: applyLeaveModalProps) => {
 
         <p className=" font-bold text-base px-6 mt-6 mb-2">Type</p>
         <div className="grid grid-cols-2 gap-3 px-5">
-          {leaveTypeItems?.map((item, index) => {
+          {leaveTypeItems?.map((item) => {
             return (
               <div
                 className="flex justify-start border-solid border-2 h-16 w-48 rounded"
