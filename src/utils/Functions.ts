@@ -14,3 +14,15 @@ export const isEmpty = (object: any) => {
   else if (typeof object === "object") return Object.keys(object).length === 0;
   else return !object;
 };
+
+// get item by property from array
+export const getItemFromArr = (array: Array<any>, property: string, threshold: any) => {
+  if (array == undefined || (array && array.length == 0)) return {};
+  if (property.length) {
+    let res = array.find(item => item[property] == threshold)
+    return res == undefined ? {} : res;
+  } else {
+    let res = array.find(item => item == threshold)
+    return res == undefined ? "" : res;
+  }
+}

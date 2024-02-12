@@ -72,17 +72,6 @@ const Leave = () => {
 
   return (
     <>
-      <div className="grid grid-cols-3 my-4 mx-8">
-        <div
-          className="text-base self-center cursor-pointer"
-          onClick={() => navigate("/")}
-        >
-          {"<"} Back
-        </div>
-        <div className="text-xl text-center w-full">Leave</div>
-      </div>
-      <hr />
-
       <div className="flex flex-col mt-4 pt-2">
         <p className=" text-lg font-bold px-8">Active Requests</p>
         {!isEmpty(leaveRequestItems) ? (
@@ -109,6 +98,7 @@ const Leave = () => {
           color="blue"
           className="w-full"
           onClick={() => setIsOpenApplyLeaveModal(true)}
+          placeholder=""
         >
           + Apply for Leave
         </Button>

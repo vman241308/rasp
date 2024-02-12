@@ -1,38 +1,26 @@
 import { useEffect, useState } from "react";
-import {
-  Tabs,
-  TabsHeader,
-  Tab,
-  TabsBody,
-} from "@material-tailwind/react";
-
-import {
-  SHIFT_STATUS_CONFIRMED,
-  SHIFT_STATUS_PUBLISHED,
-  TAB_HEADER_UPCOMING_SHIFTS,
-  TAB_HEADER_PAST_SHIFTS,
-  DAYS_OF_WEEK,
-} from "@/utils/Constants";
 
 import RaspShift from "@/components/RaspShift";
 import RaspMenu from "@/components/RaspMenu";
+
+import {
+  DAYS_OF_WEEK,
+  DEBUG_MODE,
+  MONTHS,
+} from "@/utils/Constants";
+
 import { isEmpty } from "@/utils/Functions";
 
-type shiftModel = {
-  id: number;
-  date: string;
-  month: string;
-  name: string;
-  description: string;
-  duration: string;
-  status: number;
-};
+import { Shift } from "@/types";
+
+import ShiftService from "@/services/Shifts";
+import dayjs from "dayjs";
 
 const menus = [
   {
     icon: "/calendar.png",
     name: "Calendar",
-    path: "/calendarview",
+    path: "/calendar",
   },
   {
     icon: "/timesheets.png",
@@ -42,7 +30,7 @@ const menus = [
   {
     icon: "/applyforleave.png",
     name: "Apply for Leave",
-    path: "/applyforleave",
+    path: "/leave",
   },
   {
     icon: "/payslips.png",
@@ -56,56 +44,56 @@ const menus = [
   },
 ];
 
-const tabHeaders = [
-  {
-    label: "Upcoming Shifts",
-    value: TAB_HEADER_UPCOMING_SHIFTS,
-  },
-  {
-    label: "Past Shifts",
-    value: TAB_HEADER_PAST_SHIFTS,
-  },
-];
-
 const Home = () => {
-  const [activeTab, setActiveTab] = useState(TAB_HEADER_UPCOMING_SHIFTS);
-  const [shifts, setShifts] = useState<Array<shiftModel>>();
+  const [upcomingShifts, setUpcomingShifts] = useState<Array<Shift>>();
+  const [pastShifts, setPastShifts] = useState<Array<Shift>>();
 
   useEffect(() => {
-    if (activeTab === TAB_HEADER_UPCOMING_SHIFTS) {
-      setShifts([
-        {
-          id: 1,
-          date: "10",
-          month: "Feb",
-          name: "Reefer Care",
-          description: "Thames 1",
-          duration: "00:00 - 07:00",
-          status: SHIFT_STATUS_CONFIRMED,
-        },
-        {
-          id: 2,
-          date: "11",
-          month: "Feb",
-          name: "Reefer Care",
-          description: "Thames 1",
-          duration: "00:00 - 07:00",
-          status: SHIFT_STATUS_PUBLISHED,
-        },
-        {
-          id: 3,
-          date: "12",
-          month: "Feb",
-          name: "Reefer Care",
-          description: "Thames 1",
-          duration: "00:00 - 07:00",
-          status: SHIFT_STATUS_PUBLISHED,
-        },
-      ]);
-    } else {
-      setShifts([]);
-    }
-  }, [activeTab]);
+    ShiftService.getShiftsDashboard()
+      .then((res: any) => {
+        let upcomingShifts = res.data.upcomingShifts;
+        let pastShifts = res.data.pastShifts;
+        let newUpcomingShifts: Array<Shift> = [];
+        let newPastShifts: Array<Shift> = [];
+        upcomingShifts.map((item: any, index: number) => {
+          let startDate = dayjs(item.startDateTime);
+          let endDate = dayjs(item.endDateTime);
+          newUpcomingShifts.push({
+            id: index,
+            date: startDate.get("date").toString(),
+            month: MONTHS[startDate.get("month")].slice(0, 3),
+            name: item.roleName,
+            location: item.location,
+            duration:
+              startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
+            status: item.status,
+          });
+        });
+        pastShifts.map((item: any, index: number) => {
+          let startDate = dayjs(item.startDateTime);
+          let endDate = dayjs(item.endDateTime);
+          newPastShifts.push({
+            id: index,
+            date: startDate.get("date").toString(),
+            month: MONTHS[startDate.get("month")].slice(0, 3),
+            name: item.roleName,
+            location: item.location,
+            duration:
+              startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
+            status: item.status,
+          });
+        });
+        setUpcomingShifts(newUpcomingShifts);
+        setPastShifts(newPastShifts);
+      })
+      .catch((err) => {
+        DEBUG_MODE &&
+          console.error(
+            "Sorry, but an error has been ocurred while fetching shifts!",
+            err
+          );
+      });
+  }, []);
 
   return (
     <>
@@ -121,50 +109,54 @@ const Home = () => {
             {new Date().getFullYear()}
           </p>
         </div>
+      </div>
 
-        <div>
-          <Tabs value={activeTab}>
-            <TabsHeader
-              className=""
-              indicatorProps={{
-                className: "bg-custom-blue ",
-              }}
-              placeholder="Shift tab header"
-            >
-              {tabHeaders.map(({ label, value }) => (
-                <Tab
-                  key={value}
-                  value={value}
-                  className={`${activeTab === value ? "text-white" : "text-custom-gray"
-                    } `}
-                  onClick={() => setActiveTab(value)}
-                  placeholder={`${label + " tab"}`}
-                >
-                  {label}
-                </Tab>
-              ))}
-            </TabsHeader>
-            <TabsBody placeholder="Shift tab body">
-              {!isEmpty(shifts) ? (
-                shifts.map((item, index) => {
-                  let showDate: boolean = true;
-                  if (index !== 0) {
-                    showDate = !(
-                      shifts[index - 1].date === item.date &&
-                      shifts[index - 1].month === item.month
-                    );
-                  }
-                  return (
-                    <RaspShift shift={item} key={item.id} showDate={showDate} />
+      <div className="flex px-6">
+        <div className="">
+          <span className="font-bold text-lg">{"Upcoming shifts"}</span>
+          <div className="mt-4">
+            {!isEmpty(upcomingShifts) ? (
+              upcomingShifts.map((item, index) => {
+                let showDate: boolean = true;
+                if (index !== 0) {
+                  showDate = !(
+                    upcomingShifts[index - 1].date === item.date &&
+                    upcomingShifts[index - 1].month === item.month
                   );
-                })
-              ) : (
-                <span className="flex justify-center h-[71px] items-center">
-                  No shifts to display
-                </span>
-              )}
-            </TabsBody>
-          </Tabs>
+                }
+                return (
+                  <RaspShift shift={item} key={item.id} showDate={showDate} />
+                );
+              })
+            ) : (
+              <span className="flex justify-center h-[71px] items-center">
+                No shifts to display
+              </span>
+            )}
+          </div>
+        </div>
+        <div>
+          <span className="font-bold text-lg">{"Past shifts"}</span>
+          <div className="mt-4">
+            {!isEmpty(pastShifts) ? (
+              pastShifts.map((item, index) => {
+                let showDate: boolean = true;
+                if (index !== 0) {
+                  showDate = !(
+                    pastShifts[index - 1].date === item.date &&
+                    pastShifts[index - 1].month === item.month
+                  );
+                }
+                return (
+                  <RaspShift shift={item} key={item.id} showDate={showDate} />
+                );
+              })
+            ) : (
+              <span className="flex justify-center h-[71px] items-center">
+                No shifts to display
+              </span>
+            )}
+          </div>
         </div>
       </div>
 
