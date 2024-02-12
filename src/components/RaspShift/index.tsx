@@ -1,6 +1,6 @@
 import { ShiftWithShowDate } from "@/types";
 
-const RaspShift = (props: ShiftWithShowDate) => {
+const RaspShift: React.FC<ShiftWithShowDate> = (props) => {
   return (
     <>
       <div className="flex w-full">
@@ -25,7 +25,7 @@ const RaspShift = (props: ShiftWithShowDate) => {
           <p className="text-xs text-custom-gray">{props.shift.status}</p>
         </div>
       </div>
-      <hr className="text-custom-gray/10 my-4" />
+      <hr className="text-custom-gray/10 my-4"/>
     </>
   );
 };
