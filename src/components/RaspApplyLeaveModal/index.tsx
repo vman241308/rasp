@@ -4,6 +4,8 @@ import { Radio, Typography } from "@material-tailwind/react";
 
 import "./styles.css";
 
+Modal.setAppElement("#root");
+
 export type applyLeaveModalProps = {
   isOpen: boolean;
   setIsOpenApplyLeaveModal: (newValue: string) => void;
@@ -61,7 +63,7 @@ const RaspApplyLeaveModal = (props: applyLeaveModalProps) => {
         description: "",
       },
       {
-        id: 8,
+        id: 9,
         label: "LWOP",
         description: "",
       },

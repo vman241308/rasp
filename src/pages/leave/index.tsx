@@ -88,7 +88,6 @@ const Leave = () => {
         {!isEmpty(leaveRequestItems) ? (
           leaveRequestItems.map((item, index) => {
             if (item.activeStatus === LEAVE_ACTIVE_STATUS.ACTIVE) {
-              console.log(item, "~~~~~~~~~~~~~~~~");
               return (
                 <RaspLeave
                   leave={item}
