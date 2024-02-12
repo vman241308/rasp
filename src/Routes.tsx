@@ -1,5 +1,5 @@
 import MainLayout from "@/layouts";
-import CalendarLayout from "@/layouts/Calendar";
+import MenuLayout from "@/layouts/Menu";
 
 import Error404 from "@/pages/error/404";
 
@@ -19,10 +19,10 @@ const Routes = [
   },
   {
     path: "/",
-    element: <CalendarLayout />,
+    element: <MenuLayout />,
     children: [
       {
-        path: "/calendarview",
+        path: "/calendar",
         element: <Calendar />,
       },
     ],

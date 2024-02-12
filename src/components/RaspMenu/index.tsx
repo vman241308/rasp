@@ -1,15 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router";
 
-export type MenuComponentsProps = {
-  menu: {
-    icon: any;
-    name: string;
-    path: string;
-  };
-};
+import { Menu } from "@/types";
 
-const RaspMenu: React.FC<MenuComponentsProps> = (props) => {
+const RaspMenu: React.FC<Menu> = (props) => {
   const navigate = useNavigate();
 
   return (
