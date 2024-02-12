@@ -13,7 +13,7 @@ export type ShiftComponentsProps = {
   showDate: boolean;
 };
 
-const RaspShift: React.FC<ShiftComponentsProps> = (props) => {
+const RaspShift = (props: ShiftComponentsProps) => {
   return (
     <div className="flex px-8 py-4 border-b w-full">
       <div

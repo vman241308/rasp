@@ -5,6 +5,7 @@ import Error404 from "@/pages/error/404";
 
 import Home from "@/pages/home";
 import Calendar from "@/pages/calendar";
+import Leave from "@/pages/leave";
 
 const Routes = [
   {
@@ -22,8 +23,12 @@ const Routes = [
     element: <CalendarLayout />,
     children: [
       {
-        path: "/calendarview",
+        path: "/calendar",
         element: <Calendar />,
+      },
+      {
+        path: "/leave",
+        element: <Leave />,
       },
     ],
   },

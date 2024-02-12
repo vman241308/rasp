@@ -4,7 +4,6 @@ import {
   TabsHeader,
   Tab,
   TabsBody,
-  TabPanel,
 } from "@material-tailwind/react";
 
 import {
@@ -136,9 +135,8 @@ const Home = () => {
                 <Tab
                   key={value}
                   value={value}
-                  className={`${
-                    activeTab === value ? "text-white" : "text-custom-gray"
-                  } `}
+                  className={`${activeTab === value ? "text-white" : "text-custom-gray"
+                    } `}
                   onClick={() => setActiveTab(value)}
                   placeholder={`${label + " tab"}`}
                 >

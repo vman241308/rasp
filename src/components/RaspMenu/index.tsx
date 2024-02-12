@@ -9,7 +9,7 @@ export type MenuComponentsProps = {
   };
 };
 
-const RaspMenu: React.FC<MenuComponentsProps> = (props) => {
+const RaspMenu = (props: MenuComponentsProps) => {
   const navigate = useNavigate();
 
   return (
