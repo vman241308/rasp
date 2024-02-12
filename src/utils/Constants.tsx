@@ -10,6 +10,12 @@ export const SHIFT_STATUS_PUBLISHED = 0;
 
 export const SHIFT_STATUS_CONFIRMED = 1;
 
+export const LEAVE_STATUS = {
+  PENDING: 0,
+  APPROVED: 1,
+  DECLINED: 2
+}
+
 // tab headers on home page
 export const TAB_HEADER_UPCOMING_SHIFTS = "upcoming_shifts";
 
