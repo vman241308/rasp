@@ -1,5 +1,4 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useEffect, useRef, useState } from "react";
 
 import dayjs, { Dayjs } from "dayjs";
 
@@ -9,173 +8,104 @@ import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
 
 import { isEmpty } from "@/utils/Functions";
 import RaspShift from "@/components/RaspShift";
-import {
-  SHIFT_STATUS_CONFIRMED,
-  SHIFT_STATUS_PUBLISHED,
-} from "@/utils/Constants";
+import { DEBUG_MODE, MONTHS } from "@/utils/Constants";
+
+import { Shift } from "@/types";
+import ShiftService from "@/services/Shifts";
 
 const Calendar = () => {
-  const navigate = useNavigate();
-
-  type shiftModel = {
-    id: number;
-    date: string;
-    month: string;
-    name: string;
-    description: string;
-    duration: string;
-    status: number;
-  };
-
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
-  const [shifts, setShifts] = useState<Array<shiftModel>>();
-  const [allShow, setAllShow] = useState<boolean>(true);
+  const [shifts, setShifts] = useState<Array<Shift>>();
 
-  useEffect(() => {
-    switch (selectedDate?.$D) {
-      case 10:
-        setShifts([
-          {
-            id: 1,
-            date: "10",
-            month: "Feb",
-            name: "Reefer Care",
-            description: "Thames 1",
-            duration: "00:00 - 07:00",
-            status: SHIFT_STATUS_CONFIRMED,
-          },
-          {
-            id: 2,
-            date: "10",
-            month: "Feb",
-            name: "Reefer Care",
-            description: "Thames 1",
-            duration: "08:00 - 10:00",
-            status: SHIFT_STATUS_CONFIRMED,
-          },
-        ]);
-        break;
-      case 11:
-        setShifts([
-          {
-            id: 3,
-            date: "11",
-            month: "Feb",
-            name: "Reefer Care",
-            description: "Thames 1",
-            duration: "00:00 - 07:00",
-            status: SHIFT_STATUS_PUBLISHED,
-          },
-        ]);
-        break;
-      case 12:
-        setShifts([
-          {
-            id: 4,
-            date: "12",
-            month: "Feb",
-            name: "Reefer Care",
-            description: "Thames 1",
-            duration: "00:00 - 07:00",
-            status: SHIFT_STATUS_PUBLISHED,
-          },
-        ]);
-        break;
-      default:
-        if (allShow)
-          setShifts([
-            {
-              id: 1,
-              date: "10",
-              month: "Feb",
-              name: "Reefer Care",
-              description: "Thames 1",
-              duration: "00:00 - 07:00",
-              status: SHIFT_STATUS_CONFIRMED,
-            },
-            {
-              id: 2,
-              date: "10",
-              month: "Feb",
-              name: "Reefer Care",
-              description: "Thames 1",
-              duration: "08:00 - 10:00",
-              status: SHIFT_STATUS_CONFIRMED,
-            },
-            {
-              id: 3,
-              date: "11",
-              month: "Feb",
-              name: "Reefer Care",
-              description: "Thames 1",
-              duration: "00:00 - 07:00",
-              status: SHIFT_STATUS_PUBLISHED,
-            },
-            {
-              id: 4,
-              date: "12",
-              month: "Feb",
-              name: "Reefer Care",
-              description: "Thames 1",
-              duration: "00:00 - 07:00",
-              status: SHIFT_STATUS_PUBLISHED,
-            },
-          ]);
-        else setShifts([]);
-    }
-  }, [selectedDate]);
+  const allShow = useRef(true);
+
+  const getShifts = (month: string) => {
+    ShiftService.getShiftsCalendar(month)
+      .then((res: any) => {
+        let newShifts: Array<Shift> = [];
+        res.data.map((item: any, index: number) => {
+          let startDate = dayjs(item.startDateTime);
+          let endDate = dayjs(item.endDateTime);
+          newShifts.push({
+            id: index,
+            date: startDate.get("date").toString(),
+            month: MONTHS[startDate.get("month")].slice(0, 3),
+            name: item.roleName,
+            location: item.location,
+            duration:
+              startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
+            status: item.status,
+          });
+        });
+        setShifts(newShifts);
+      })
+      .catch((err) => {
+        DEBUG_MODE &&
+          console.error(
+            "Sorry, but an error has been ocurred while fetching shifts!",
+            err
+          );
+      });
+  };
 
   const onChangeDate = (newValue: Dayjs) => {
     setSelectedDate(newValue);
-    setAllShow(false);
+    allShow.current = false;
+  };
+
+  const onChangeMonth = (newValue: Dayjs) => {
+    setSelectedDate(newValue);
+    allShow.current = true;
   };
 
   const onClickToday = () => {
+    allShow.current = false;
     setSelectedDate(dayjs());
-    setAllShow(false);
-  }
+    document
+      .querySelector(".MuiPickersDay-today")
+      ?.classList.add("Mui-selected");
+  };
 
   const onClickClear = () => {
-    setSelectedDate(dayjs());
-    setAllShow(true);
-  }
+    allShow.current = true;
+  };
 
   useEffect(() => {
-    if (allShow) {
+    if (allShow.current) {
       document.querySelector(".Mui-selected")?.classList.remove("Mui-selected");
+      getShifts(selectedDate.format("YYYY-MM"));
+      console.log(selectedDate.format("YYYY-MM"));
+    } else {
+      console.log(selectedDate.format("YYYY-MM-DD"));
     }
-  },[allShow])
+  }, [selectedDate]);
 
   return (
     <>
       <div>
-        <div className="grid grid-cols-3 my-4 mx-8">
-          <div className="text-base self-center cursor-pointer" onClick={() => navigate("/")}>
-            {"<"} Back
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <DateCalendar
+            value={selectedDate}
+            onChange={onChangeDate}
+            onMonthChange={onChangeMonth}
+            views={["year", "month", "day"]}
+            fixedWeekNumber={6}
+            showDaysOutsideCurrentMonth
+          />
+          <div className="flex float-end gap-4 mr-24">
+            <span className="cursor-pointer" onClick={onClickClear}>
+              Clear
+            </span>
+            <span
+              className="text-custom-blue cursor-pointer"
+              onClick={onClickToday}
+            >
+              Today
+            </span>
           </div>
-          <div className="text-xl text-center w-full">Calendar</div>
-          <div></div>
-        </div>
-        <hr />
-        <div>
-          <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <DateCalendar
-              value={selectedDate}
-              onChange={onChangeDate}
-              views={["year", "month", "day"]}
-              fixedWeekNumber={6}
-              showDaysOutsideCurrentMonth
-            />
-            <div className="flex float-end gap-4 mr-24">
-              <span className="cursor-pointer" onClick={onClickClear}>Clear</span>
-              <span className="text-custom-blue cursor-pointer" onClick={onClickToday}>
-                Today
-              </span>
-            </div>
-          </LocalizationProvider>
-        </div>
+        </LocalizationProvider>
       </div>
-      <div className="flex-1 flex flex-col bg-[#F3F8FC] items-center mt-4 pt-2">
+      <div className="flex-1 flex flex-col bg-[#F3F8FC] items-center mt-4 pt-2 px-8">
         {!isEmpty(shifts) ? (
           shifts.map((item, index) => {
             let showDate: boolean = true;
