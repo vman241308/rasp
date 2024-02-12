@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Radio, Typography } from "@material-tailwind/react";
 
@@ -8,7 +8,7 @@ Modal.setAppElement("#root");
 
 export type applyLeaveModalProps = {
   isOpen: boolean;
-  setIsOpenApplyLeaveModal: (newValue: string) => void;
+  setIsOpenApplyLeaveModal: (newValue: boolean) => void;
 };
 
 type leaveTypeModel = {
@@ -104,11 +104,13 @@ const RaspApplyLeaveModal = (props: applyLeaveModalProps) => {
                   name="description"
                   defaultChecked
                   color="blue"
+                  crossOrigin=""
                   label={
                     <div>
                       <Typography
                         color="blue-gray"
                         className="text-sm font-bold"
+                        placeholder=""
                       >
                         {item.label}
                       </Typography>
@@ -116,6 +118,7 @@ const RaspApplyLeaveModal = (props: applyLeaveModalProps) => {
                         variant="small"
                         color="gray"
                         className="font-normal"
+                        placeholder=""
                       >
                         {item.description}
                       </Typography>

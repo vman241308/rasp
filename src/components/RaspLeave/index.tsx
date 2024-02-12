@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { LEAVE_STATUS, LEAVE_ACTIVE_STATUS } from "@/utils/Constants";
 
 export type LeaveComponentsProps = {
