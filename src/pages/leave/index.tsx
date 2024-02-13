@@ -66,9 +66,9 @@ const Leave = () => {
       <div className="flex flex-col mt-4 pt-2">
         <p className=" text-lg font-bold px-8">Active Requests</p>
         {!isEmpty(leaveRequestItems) && leaveRequestItems !== undefined ? (
-          leaveRequestItems.map((item) => {
+          leaveRequestItems.map((item: LeaveRequestItem) => {
             if (item.activeStatus === LEAVE_ACTIVE_STATUS.ACTIVE) {
-              return <RaspLeave leave={item} key={item.id} />;
+              return <RaspLeave key={item.id} id={item.id} hours={item.hours} duration={item.duration} description={item.description} status={item.status} activeStatus={item.activeStatus} />;
             }
           })
         ) : (
@@ -90,15 +90,11 @@ const Leave = () => {
       </div>
       <div className="flex-1 flex flex-col bg-[#F3F8FC] mt-2 pt-2">
         <p className=" text-base font-medium px-8 mt-4">Archived Requests</p>
-        {!isEmpty(leaveRequestItems) ? (
-          leaveRequestItems.map((item, index) => {
+        {!isEmpty(leaveRequestItems) && leaveRequestItems !== undefined ? (
+          leaveRequestItems.map((item: LeaveRequestItem) => {
             if (item.activeStatus === LEAVE_ACTIVE_STATUS.ARCHIVED) {
               return (
-                <RaspLeave
-                  leave={item}
-                  key={item.id}
-                  leaveActiveStatus={item.activeStatus}
-                />
+                <RaspLeave key={item.id} id={item.id} hours={item.hours} duration={item.duration} description={item.description} status={item.status} activeStatus={item.activeStatus} />
               );
             }
           })

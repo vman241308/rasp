@@ -16,18 +16,35 @@ const RaspMenuHeader = () => {
       label: "Leave",
       path: "/leave",
     },
+    {
+      id: 2,
+      label: "Leave",
+      path: "/leave/request/123",
+    },
   ];
+
+  const onClickBack = () => {
+    switch (pathname) {
+      case "/leave/request/123":
+        navigate("/leave");
+        break;
+      default:
+        navigate("/");
+    }
+  };
 
   return (
     <>
       <div className="grid grid-cols-3 my-4 mx-8">
         <div
           className="text-base self-center cursor-pointer"
-          onClick={() => navigate("/")}
+          onClick={onClickBack}
         >
           {"<"} Back
         </div>
-        <div className="text-xl text-center w-full">{getItemFromArr(menus, "path", pathname)?.label || ""}</div>
+        <div className="text-xl text-center w-full">
+          {getItemFromArr(menus, "path", pathname)?.label || ""}
+        </div>
       </div>
       <hr />
     </>

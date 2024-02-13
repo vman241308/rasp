@@ -24,14 +24,12 @@ export type ShiftWithShowDate = {
 };
 
 export type LeaveRequestItem = {
-  leave: {
-    id: number;
-    hours: number;
-    duration: string;
-    description: string;
-    status: number;
-    activeStatus: number;
-  };
+  id: number;
+  hours: number;
+  duration: string;
+  description: string;
+  status: number;
+  activeStatus: number;
 };
 
 export type LeaveType = {

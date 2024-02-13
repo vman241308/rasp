@@ -1,8 +1,6 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useEffect } from "react";
 
 const RequestItem = () => {
-  const { id } = useParams();
 
   useEffect(() => {}, []);
 
