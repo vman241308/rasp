@@ -67,6 +67,8 @@ const Home = () => {
             duration:
               startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
             status: item.status,
+            startDateTime: item.startDateTime,
+            endDateTime: item.endDateTime,
           });
         });
         pastShifts.map((item: any, index: number) => {
@@ -81,6 +83,8 @@ const Home = () => {
             duration:
               startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
             status: item.status,
+            startDateTime: item.startDateTime,
+            endDateTime: item.endDateTime,
           });
         });
         setUpcomingShifts(newUpcomingShifts);
@@ -111,8 +115,8 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex px-6">
-        <div className="">
+      <div className="flex px-6 w-full overflow-auto gap-6">
+        <div className="min-w-[85%]">
           <span className="font-bold text-lg">{"Upcoming shifts"}</span>
           <div className="mt-4">
             {!isEmpty(upcomingShifts) ? (
@@ -135,7 +139,7 @@ const Home = () => {
             )}
           </div>
         </div>
-        <div>
+        <div className="min-w-[85%]">
           <span className="font-bold text-lg">{"Past shifts"}</span>
           <div className="mt-4">
             {!isEmpty(pastShifts) ? (
