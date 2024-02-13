@@ -16,26 +16,41 @@ import ShiftService from "@/services/Shifts";
 const Calendar = () => {
   const [selectedDate, setSelectedDate] = useState<Dayjs>(dayjs());
   const [shifts, setShifts] = useState<Array<Shift>>();
+  const [allShow, setAllShow] = useState<boolean>(true);
 
-  const allShow = useRef(true);
+  const clickedToday = useRef(false);
 
-  const getShifts = (month: string) => {
+  const getShifts = (month: string, allShow: boolean) => {
     ShiftService.getShiftsCalendar(month)
       .then((res: any) => {
         let newShifts: Array<Shift> = [];
         res.data.map((item: any, index: number) => {
           let startDate = dayjs(item.startDateTime);
           let endDate = dayjs(item.endDateTime);
-          newShifts.push({
-            id: index,
-            date: startDate.get("date").toString(),
-            month: MONTHS[startDate.get("month")].slice(0, 3),
-            name: item.roleName,
-            location: item.location,
-            duration:
-              startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
-            status: item.status,
-          });
+          if (
+            allShow ||
+            (!allShow &&
+              selectedDate
+                .add(-1, "second")
+                .isBefore(dayjs(item.startDateTime)) &&
+              selectedDate
+                .add(1, "day")
+                .add(1, "second")
+                .isAfter(dayjs(item.endDateTime)))
+          ) {
+            newShifts.push({
+              id: index,
+              date: startDate.get("date").toString(),
+              month: MONTHS[startDate.get("month")].slice(0, 3),
+              name: item.roleName,
+              location: item.location,
+              duration:
+                startDate.format("HH:mm") + " - " + endDate.format("HH:mm"),
+              status: item.status,
+              startDateTime: item.startDateTime,
+              endDateTime: item.endDateTime,
+            });
+          }
         });
         setShifts(newShifts);
       })
@@ -49,36 +64,31 @@ const Calendar = () => {
   };
 
   const onChangeDate = (newValue: Dayjs) => {
-    setSelectedDate(newValue);
-    allShow.current = false;
+    if (clickedToday.current) return;
+    setSelectedDate(newValue.set("hour", 0).set("minute", 0).set("second", 0));
+    setAllShow(false);
   };
 
   const onChangeMonth = (newValue: Dayjs) => {
+    if (clickedToday.current) return;
     setSelectedDate(newValue);
-    allShow.current = true;
+    setAllShow(true);
   };
 
   const onClickToday = () => {
-    allShow.current = false;
-    setSelectedDate(dayjs());
-    document
-      .querySelector(".MuiPickersDay-today")
-      ?.classList.add("Mui-selected");
+    setAllShow(false);
+    clickedToday.current = true;
+    setSelectedDate(dayjs().set("hour", 0).set("minute", 0).set("second", 0));
   };
 
   const onClickClear = () => {
-    allShow.current = true;
+    setAllShow(true);
   };
 
   useEffect(() => {
-    if (allShow.current) {
-      document.querySelector(".Mui-selected")?.classList.remove("Mui-selected");
-      getShifts(selectedDate.format("YYYY-MM"));
-      console.log(selectedDate.format("YYYY-MM"));
-    } else {
-      console.log(selectedDate.format("YYYY-MM-DD"));
-    }
-  }, [selectedDate]);
+    getShifts(selectedDate.format("YYYY-MM"), allShow);
+    clickedToday.current = false;
+  }, [allShow, selectedDate]);
 
   return (
     <>
@@ -88,6 +98,7 @@ const Calendar = () => {
             value={selectedDate}
             onChange={onChangeDate}
             onMonthChange={onChangeMonth}
+            onYearChange={onChangeMonth}
             views={["year", "month", "day"]}
             fixedWeekNumber={6}
             showDaysOutsideCurrentMonth
