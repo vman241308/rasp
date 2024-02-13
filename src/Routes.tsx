@@ -1,10 +1,12 @@
 import MainLayout from "@/layouts";
-import CalendarLayout from "@/layouts/Calendar";
+import MenuLayout from "@/layouts/Menu";
 
 import Error404 from "@/pages/error/404";
 
 import Home from "@/pages/home";
 import Calendar from "@/pages/calendar";
+import Leave from "@/pages/leave";
+import RequestItem from "@/pages/leave/RequestItem";
 
 const Routes = [
   {
@@ -19,11 +21,19 @@ const Routes = [
   },
   {
     path: "/",
-    element: <CalendarLayout />,
+    element: <MenuLayout />,
     children: [
       {
-        path: "/calendarView",
+        path: "/calendar",
         element: <Calendar />,
+      },
+      {
+        path: "/leave",
+        element: <Leave />,
+      },
+      {
+        path: "/leave/request/:id",
+        element: <RequestItem />,
       },
     ],
   },
