@@ -32,7 +32,7 @@ const Routes = [
         element: <Leave />,
       },
       {
-        path: "/request/:id",
+        path: "/leave/request/:id",
         element: <RequestItem />,
       },
     ],
