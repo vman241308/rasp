@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Modal from "react-modal";
 import { Radio, Typography } from "@material-tailwind/react";
 
+import { LeaveType } from "@/types";
 import "./styles.css";
 
 Modal.setAppElement("#root");
@@ -11,14 +12,8 @@ export type applyLeaveModalProps = {
   setIsOpenApplyLeaveModal: (newValue: boolean) => void;
 };
 
-type leaveTypeModel = {
-  id: number;
-  label: string;
-  description: string;
-};
-
 const RaspApplyLeaveModal = (props: applyLeaveModalProps) => {
-  const [leaveTypeItems, setLeaveTypeItems] = useState<Array<leaveTypeModel>>();
+  const [leaveTypeItems, setLeaveTypeItems] = useState<Array<LeaveType>>();
 
   useEffect(() => {
     setLeaveTypeItems([

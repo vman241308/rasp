@@ -1,29 +1,20 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
 
 import { isEmpty } from "@/utils/Functions";
 import RaspLeave from "@/components/RaspLeave";
 import RaspApplyLeaveModal from "@/components/RaspApplyLeaveModal";
 import { Button } from "@material-tailwind/react";
 
+import { LeaveRequestItem } from "@/types";
+
 import { LEAVE_STATUS, LEAVE_ACTIVE_STATUS } from "@/utils/Constants";
 
-type leaveModel = {
-  id: number;
-  hours: number;
-  duration: string;
-  description: string;
-  status: number;
-  activeStatus: number;
-};
-
 const Leave = () => {
-  const navigate = useNavigate();
   const [isOpenApplyLeaveModal, setIsOpenApplyLeaveModal] =
     useState<boolean>(false);
 
   const [leaveRequestItems, setLeaveRequestItems] =
-    useState<Array<leaveModel>>();
+    useState<Array<LeaveRequestItem>>();
 
   useEffect(() => {
     setLeaveRequestItems([
@@ -77,13 +68,7 @@ const Leave = () => {
         {!isEmpty(leaveRequestItems) ? (
           leaveRequestItems.map((item, index) => {
             if (item.activeStatus === LEAVE_ACTIVE_STATUS.ACTIVE) {
-              return (
-                <RaspLeave
-                  leave={item}
-                  key={item.id}
-                  leaveActiveStatus={item.activeStatus}
-                />
-              );
+              return <RaspLeave leave={item} key={item.id} />;
             }
           })
         ) : (

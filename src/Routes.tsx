@@ -6,6 +6,7 @@ import Error404 from "@/pages/error/404";
 import Home from "@/pages/home";
 import Calendar from "@/pages/calendar";
 import Leave from "@/pages/leave";
+import RequestItem from "@/pages/leave/RequestItem";
 
 const Routes = [
   {
@@ -29,6 +30,10 @@ const Routes = [
       {
         path: "/leave",
         element: <Leave />,
+      },
+      {
+        path: "/request/:id",
+        element: <RequestItem />,
       },
     ],
   },
