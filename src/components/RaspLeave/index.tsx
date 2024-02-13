@@ -1,18 +1,8 @@
 import { useState, useEffect } from "react";
 import { LEAVE_STATUS, LEAVE_ACTIVE_STATUS } from "@/utils/Constants";
+import { LeaveRequestItem } from "@/types";
 
-export type LeaveComponentsProps = {
-  leave: {
-    id: number;
-    hours: number;
-    duration: string;
-    description: string;
-    status: number;
-  };
-  leaveActiveStatus: number;
-};
-
-const RaspLeave = (props: LeaveComponentsProps) => {
+const RaspLeave = (props: LeaveRequestItem) => {
   const [leaveStatusLavel, setLeaveStatusLavel] = useState<String>("");
 
   useEffect(() => {
@@ -43,12 +33,12 @@ const RaspLeave = (props: LeaveComponentsProps) => {
       <div className="flex flex-col justify-center w-24 basis-1/3 items-end">
         <p
           className={`text-sm p-1 text-custom-gray ${
-            props.leaveActiveStatus === LEAVE_ACTIVE_STATUS.ACTIVE &&
+            props.leave.activeStatus === LEAVE_ACTIVE_STATUS.ACTIVE &&
             props.leave.status === LEAVE_STATUS.APPROVED
               ? "text-custom-success-pressed"
               : "text-custom-gray"
           } ${
-            props.leaveActiveStatus === LEAVE_ACTIVE_STATUS.ACTIVE &&
+            props.leave.activeStatus === LEAVE_ACTIVE_STATUS.ACTIVE &&
             props.leave.status === LEAVE_STATUS.APPROVED
               ? "bg-custom-success-pressed/15"
               : "bg-custom-gray/15"

@@ -20,3 +20,18 @@ export type ShiftWithShowDate = {
   shift: Shift;
   showDate: boolean;
 };
+
+export type LeaveRequestItem = {
+  id: number;
+  hours: number;
+  duration: string;
+  description: string;
+  status: number;
+  activeStatus: number;
+};
+
+export type LeaveType = {
+  id: number;
+  label: string;
+  description: string;
+};
