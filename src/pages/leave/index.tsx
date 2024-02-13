@@ -65,8 +65,8 @@ const Leave = () => {
     <>
       <div className="flex flex-col mt-4 pt-2">
         <p className=" text-lg font-bold px-8">Active Requests</p>
-        {!isEmpty(leaveRequestItems) ? (
-          leaveRequestItems.map((item, index) => {
+        {!isEmpty(leaveRequestItems) && leaveRequestItems !== undefined ? (
+          leaveRequestItems.map((item) => {
             if (item.activeStatus === LEAVE_ACTIVE_STATUS.ACTIVE) {
               return <RaspLeave leave={item} key={item.id} />;
             }

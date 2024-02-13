@@ -117,7 +117,7 @@ const Calendar = () => {
         </LocalizationProvider>
       </div>
       <div className="flex-1 flex flex-col bg-[#F3F8FC] items-center mt-4 pt-2 px-8">
-        {!isEmpty(shifts) ? (
+        {!isEmpty(shifts) && shifts !== undefined ? (
           shifts.map((item, index) => {
             let showDate: boolean = true;
             if (index !== 0) {

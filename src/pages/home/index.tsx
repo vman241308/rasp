@@ -115,11 +115,11 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="flex px-6 w-full overflow-auto gap-6">
+      <div className="xs:flex px-6 w-full overflow-auto gap-6 ">
         <div className="min-w-[85%]">
           <span className="font-bold text-lg">{"Upcoming shifts"}</span>
           <div className="mt-4">
-            {!isEmpty(upcomingShifts) ? (
+            {!isEmpty(upcomingShifts) && upcomingShifts !== undefined ? (
               upcomingShifts.map((item, index) => {
                 let showDate: boolean = true;
                 if (index !== 0) {
@@ -142,7 +142,7 @@ const Home = () => {
         <div className="min-w-[85%]">
           <span className="font-bold text-lg">{"Past shifts"}</span>
           <div className="mt-4">
-            {!isEmpty(pastShifts) ? (
+            {!isEmpty(pastShifts) && pastShifts !== undefined ? (
               pastShifts.map((item, index) => {
                 let showDate: boolean = true;
                 if (index !== 0) {
@@ -165,7 +165,7 @@ const Home = () => {
       </div>
 
       <div className="flex-1 flex flex-col bg-[#F3F8FC] justify-between items-center mt-4 pt-2">
-        <div className="grid grid-cols-3 gap-3 p-3">
+        <div className="grid xs:grid-cols-3 gap-3 p-3 grid-cols-2">
           {menus.map((menu) => (
             <RaspMenu menu={menu} key={menu.name} />
           ))}

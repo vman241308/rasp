@@ -10,6 +10,9 @@ export default withMT({
       "custom-blue": "#4092F3",
       "custom-success-pressed": "#3CC784",
     },
+    screens: {
+      'xs': '430px'
+    }
   },
   plugins: [],
 });
