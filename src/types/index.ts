@@ -14,6 +14,8 @@ export type Shift = {
   location: string;
   duration: string;
   status: string;
+  startDateTime: string;
+  endDateTime: string;
 };
 
 export type ShiftWithShowDate = {
